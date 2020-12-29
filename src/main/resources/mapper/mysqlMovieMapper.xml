@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mapper.MysqlMovieMapper">
+    <select id="getMoviesCount" resultType="com.demo.dto.ProductMoviePair">
+        select count(*) as "productNum", count(distinct title) as "MovieNum"
+        from Product
+        <if test="!(getMovieDTO.language == null)">
+            natural join LanguageOf
+        </if>
+        <if test="!(getMovieDTO.genre == null)">
+            inner join Classify on (Classify.movie = Product.title)
+        </if>
+        <if test="!(getMovieDTO.format == null)">
+            natural join Binding
+        </if>
+        <if test="!(getMovieDTO.director == null)">
+            inner join Direct on (Direct.movie = Product.title)
+        </if>
+        <if test="!(getMovieDTO.actor == null)">
+            inner join Act on (Act.movie = Product.title)
+        </if>
+        <where>
+        <if test="!(getMovieDTO.title == null)">
+            and title like CONCAT('%', #{getMovieDTO.title}, '%')
+        </if>
+        <if test="!(getMovieDTO.productId == null)">
+            and productId like CONCAT('%', #{getMovieDTO.productId}, '%')
+        </if>
+        <if test="getMovieDTO.rateType == 1">
+            and rate &gt;= #{getMovieDTO.rate}
+        </if>
+        <if test="getMovieDTO.rateType == 2">
+            and rate = #{getMovieDTO.rate}
+        </if>
+        <if test="getMovieDTO.rateType == 3">
+            and rate &lt;= #{getMovieDTO.rate}
+        </if>
+        <if test="getMovieDTO.runtimeType == 1">
+            and runtime &gt;= #{getMovieDTO.runtime}
+        </if>
+        <if test="getMovieDTO.runtimeType == 2">
+            and runtime = #{getMovieDTO.runtime}
+        </if>
+        <if test="getMovieDTO.runtimeType == 3">
+            and runtime &lt;= #{getMovieDTO.runtime}
+        </if>
+        <if test="getMovieDTO.releaseYearType == 1">
+            and release_year &gt;= #{getMovieDTO.releaseYear}
+        </if>
+        <if test="getMovieDTO.releaseYearType == 2">
+            and release_year = #{getMovieDTO.releaseYear}
+        </if>
+        <if test="getMovieDTO.releaseYearType == 3">
+            and release_year &lt;= #{getMovieDTO.releaseYear}
+        </if>
+        <if test="getMovieDTO.releaseMonthType == 1">
+            and release_month &gt;= #{getMovieDTO.releaseMonth}
+        </if>
+        <if test="getMovieDTO.releaseMonthType == 2">
+            and release_month = #{getMovieDTO.releaseMonth}
+        </if>
+        <if test="getMovieDTO.releaseMonthType == 3">
+            and release_month &lt;= #{getMovieDTO.releaseMonth}
+        </if>
+        <if test="getMovieDTO.releaseDayType == 1">
+            and release_day &gt;= #{getMovieDTO.releaseDay}
+        </if>
+        <if test="getMovieDTO.releaseDayType == 2">
+            and release_day = #{getMovieDTO.releaseDay}
+        </if>
+        <if test="getMovieDTO.releaseDayType == 3">
+            and release_day &lt;= #{getMovieDTO.releaseDay}
+        </if>
+        <if test="getMovieDTO.releaseWeekdayType == 1">
+            and release_weekday &gt;= #{getMovieDTO.releaseWeekday}
+        </if>
+        <if test="getMovieDTO.releaseWeekdayType == 2">
+            and release_weekday = #{getMovieDTO.releaseWeekday}
+        </if>
+        <if test="getMovieDTO.releaseWeekdayType == 3">
+            and release_weekday &lt;= #{getMovieDTO.releaseWeekday}
+        </if>
+        <if test="!(getMovieDTO.language == null)">
+            and LanguageOf.language = #{getMovieDTO.language}
+        </if>
+        <if test="!(getMovieDTO.genre == null)">
+            and Classify.genre = #{getMovieDTO.genre}
+        </if>
+        <if test="!(getMovieDTO.format == null)">
+            and Binding.format = #{getMovieDTO.format}
+        </if>
+        <if test="!(getMovieDTO.director == null)">
+            and Direct.director like CONCAT('%', #{getMovieDTO.director}, '%')
+        </if>
+        <if test="!(getMovieDTO.actor == null)">
+            and Act.actor like CONCAT('%', #{getMovieDTO.actor}, '%')
+        </if>
+        </where>
+    </select>
+
+
+</mapper>
