@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class GetMovieDTO {
+
     private String title;
     private String productId;
     private double rate;
@@ -18,10 +19,4 @@ public class GetMovieDTO {
     private String director;
     private String actor;
 
-    private int rateType;
-    private int runtimeType;
-    private int releaseYearType;
-    private int releaseMonthType;
-    private int releaseDayType;
-    private int releaseWeekdayType;
 }

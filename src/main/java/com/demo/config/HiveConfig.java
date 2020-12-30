@@ -11,8 +11,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @Configuration
-public class HiveMovieConfig {
-    private static final Logger logger = LoggerFactory.getLogger(HiveMovieConfig.class);
+public class HiveConfig {
+    private static final Logger logger = LoggerFactory.getLogger(HiveConfig.class);
 
     @Autowired
     private Environment env;

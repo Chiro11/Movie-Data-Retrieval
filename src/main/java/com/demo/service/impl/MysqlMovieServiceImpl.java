@@ -1,12 +1,15 @@
 package com.demo.service.impl;
 
 import com.demo.dto.GetMovieDTO;
-import com.demo.dto.ProductMoviePair;
+import com.demo.dto.GetMovieTypeDTO;
+import com.demo.dto.PageDataDTO;
+import com.demo.pojo.MoviesCountResult;
 import com.demo.mapper.MysqlMovieMapper;
-import com.demo.pojo.JsonResult;
 import com.demo.service.MysqlMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class MysqlMovieServiceImpl implements MysqlMovieService {
@@ -19,7 +22,17 @@ public class MysqlMovieServiceImpl implements MysqlMovieService {
 //    public JsonResult getMovies(GetMovieDTO getMovieDTO) {
 //        return mysqlMovieMapper.getMovies(getMovieDTO);
 //    }
-    public ProductMoviePair getMovieCount(GetMovieDTO getMovieDTO) {
-        return mysqlMovieMapper.getMoviesCount(getMovieDTO);
+//    public ProductMoviePair getMovieCount(GetMovieDTO getMovieDTO) {
+//        return mysqlMovieMapper.getMoviesCount(getMovieDTO);
+//    }
+    public MoviesCountResult getMoviesCount(GetMovieDTO getMovieDTO, GetMovieTypeDTO getMovieTypeDTO) {
+        return mysqlMovieMapper.getMoviesCount(getMovieDTO, getMovieTypeDTO);
+    }
+
+    public List<String> getMovieList(GetMovieDTO getMovieDTO,
+                                     GetMovieTypeDTO getMovieTypeDTO,
+                                     PageDataDTO pageDataDTO) {
+        int startPos = (pageDataDTO.getPageNum()-1)*pageDataDTO.getPageSize();
+        return mysqlMovieMapper.getMovieList(getMovieDTO, getMovieTypeDTO, startPos, pageDataDTO.getPageSize());
     }
 }

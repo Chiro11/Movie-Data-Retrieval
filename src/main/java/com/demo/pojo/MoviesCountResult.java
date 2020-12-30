@@ -5,8 +5,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class MoviesResult {
+public class MoviesCountResult {
+
     private int productCount;
     private int movieCount;
-    private List<String> list;
+
 }

@@ -1,2 +1,9 @@
-package com.demo.dto;public class PageDataDTO {
+package com.demo.dto;
+
+import lombok.Data;
+
+@Data
+public class PageDataDTO {
+    private int pageNum;
+    private int pageSize;
 }

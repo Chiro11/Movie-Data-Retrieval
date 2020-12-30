@@ -1,0 +1,45 @@
+server:
+  port: 8080
+
+spring:
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
+  http:
+    encoding:
+      force: true
+      charset: UTF-8
+      enabled: true
+
+hive:
+  url: jdbc:hive2://121.4.13.41:10000/default
+  driver-class-name: org.apache.hive.jdbc.HiveDriver
+  type: com.alibaba.druid.pool.DruidDataSource
+  user: root
+  password: 123456
+  initialSize: 1
+  minIdle: 3
+  maxActive: 20
+  maxWait: 60000
+  timeBetweenEvictionRunsMillis: 60000
+  minEvictableIdleTimeMillis: 30000
+  validationQuery: select 1
+  testWhileIdle: true
+  testOnBorrow: false
+  testOnReturn: false
+  poolPreparedStatements: true
+  maxPoolPreparedStatementPerConnectionSize: 20
+
+
+mysql:
+  datasource:
+    url: jdbc:mysql://106.15.234.251:3306/movies?useUnicode=true&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+    initial-size: 5
+    min-idle: 1
+    max-active: 20
+    test-on-borrow: true
+    max-wait: 60000
