@@ -1,8 +1,17 @@
 package com.demo.service;
 
 import com.demo.dto.GetMovieDTO;
-import com.demo.pojo.ProductMoviePair;
+import com.demo.dto.GetMovieTypeDTO;
+import com.demo.pojo.MoviesCountResult;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 public interface HiveMovieService {
-//    public ProductMoviePair getMovieCount(GetMovieDTO getMovieDTO);
+
+    public MoviesCountResult test(GetMovieDTO getMovieDTO,
+                                  GetMovieTypeDTO getMovieTypeDTO,
+                                  JdbcTemplate jdbcTemplate);
+
+    public MoviesCountResult getMoviesCount(GetMovieDTO getMovieDTO,
+                                            GetMovieTypeDTO getMovieTypeDTO,
+                                            JdbcTemplate jdbcTemplate);
 }
