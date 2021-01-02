@@ -59,10 +59,31 @@ public class MysqlMovieController {
     }
 
     @RequestMapping("/getMovieList")
-    public JsonResult getMovieList(GetMovieDTO getMovieDTO, GetMovieTypeDTO getMovieTypeDTO, PageDataDTO pageDataDTO) {
-        pageDataDTO.setPageNum(2);
-        pageDataDTO.setPageSize(10);
-        getMovieDTO.setTitle("Harry");
+    public JsonResult getMovieList(@RequestBody GetMoviePageAllDTO getMoviePageAllDTO) {
+        GetMovieDTO getMovieDTO = new GetMovieDTO(getMoviePageAllDTO.getTitle(),
+                getMoviePageAllDTO.getProductId(),
+                getMoviePageAllDTO.getRate(),
+                getMoviePageAllDTO.getRuntime(),
+                getMoviePageAllDTO.getReleaseYear(),
+                getMoviePageAllDTO.getReleaseMonth(),
+                getMoviePageAllDTO.getReleaseDay(),
+                getMoviePageAllDTO.getReleaseWeekday(),
+                getMoviePageAllDTO.getLanguage(),
+                getMoviePageAllDTO.getFormat(),
+                getMoviePageAllDTO.getGenre(),
+                getMoviePageAllDTO.getDirector(),
+                getMoviePageAllDTO.getActor());
+        GetMovieTypeDTO getMovieTypeDTO = new GetMovieTypeDTO(getMoviePageAllDTO.getRateType(),
+                getMoviePageAllDTO.getRuntimeType(),
+                getMoviePageAllDTO.getReleaseYearType(),
+                getMoviePageAllDTO.getReleaseMonthType(),
+                getMoviePageAllDTO.getReleaseDayType(),
+                getMoviePageAllDTO.getReleaseWeekdayType());
+        PageDataDTO pageDataDTO = new PageDataDTO(getMoviePageAllDTO.getPageNum(),
+                getMoviePageAllDTO.getPageSize());
+//        pageDataDTO.setPageNum(2);
+//        pageDataDTO.setPageSize(10);
+//        getMovieDTO.setTitle("Harry");
         long startTime = System.currentTimeMillis();
         List<String> titles = mysqlMovieService.getMovieList(getMovieDTO, getMovieTypeDTO, pageDataDTO);
         long endTime = System.currentTimeMillis();
