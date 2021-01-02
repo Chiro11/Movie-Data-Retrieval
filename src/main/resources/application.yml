@@ -13,7 +13,7 @@ spring:
       enabled: true
 
 hive:
-  url: jdbc:hive2://121.4.13.41:10000/default
+  url: jdbc:hive2://8.131.81.51:10000/default
   driver-class-name: org.apache.hive.jdbc.HiveDriver
   type: com.alibaba.druid.pool.DruidDataSource
   user: root

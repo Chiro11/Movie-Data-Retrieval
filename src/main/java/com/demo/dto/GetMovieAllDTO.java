@@ -1,15 +1,9 @@
 package com.demo.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class GetMovieDTO {
+public class GetMovieAllDTO {
 
     private String title;
     private String productId;
@@ -24,5 +18,12 @@ public class GetMovieDTO {
     private String genre;
     private String director;
     private String actor;
+
+    private int rateType;
+    private int runtimeType;
+    private int releaseYearType;
+    private int releaseMonthType;
+    private int releaseDayType;
+    private int releaseWeekdayType;
 
 }

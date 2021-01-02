@@ -47,9 +47,13 @@ public class HiveMovieController {
     @RequestMapping("/getMoviesCount")
     public JsonResult getMoviesCount(GetMovieDTO getMovieDTO, GetMovieTypeDTO getMovieTypeDTO) {
         long startTime = System.currentTimeMillis();
+//        getMovieDTO.setReleaseYear(2000);
+//        getMovieTypeDTO.setReleaseYearType(2);
+        getMovieDTO.setDirector("Harry");
+        getMovieDTO.setLanguage("english");
         getMovieDTO.setReleaseYear(2000);
         getMovieTypeDTO.setReleaseYearType(2);
-        getMovieDTO.setLanguage("English");
+//        getMovieDTO.setLanguage("english");
         MoviesCountResult mcr = hiveMovieService.getMoviesCount(getMovieDTO, getMovieTypeDTO, jdbcTemplate);
         long endTime = System.currentTimeMillis();
         return new JsonResult("ok", endTime-startTime, mcr);

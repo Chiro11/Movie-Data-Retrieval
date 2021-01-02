@@ -4,10 +4,13 @@ import com.demo.dto.GetMovieDTO;
 import com.demo.dto.GetMovieTypeDTO;
 import com.demo.pojo.MoviesCountResult;
 import org.apache.ibatis.annotations.Mapper;
+import org.mortbay.component.Container;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -36,25 +39,25 @@ public class HiveMovieMapper {
     public MoviesCountResult getMoviesCount(GetMovieDTO getMovieDTO,
                                        GetMovieTypeDTO getMovieTypeDTO,
                                        JdbcTemplate jdbcTemplate) {
-        String sql = "select count(*), count(distinct title) from product";
+        String sql = "select * from product";
         if(getMovieDTO.getLanguage()!=null)
             sql += " inner join languageof on (product.productid=languageof.productid)";
         if(getMovieDTO.getGenre()!=null)
             sql += " inner join classify on (classify.movie=product.title)";
         if(getMovieDTO.getDirector()!=null)
-            sql += " inner join direct on (direct.movie=product.title";
+            sql += " inner join direct on (direct.movie=product.title)";
         if(getMovieDTO.getActor()!=null)
             sql += " inner join act on (act.movie=product.title)";
         boolean flag = false;
         if(getMovieDTO.getTitle()!=null) {
             sql += flag?" and":" where";
             flag = true;
-            sql += " title like CONCAT('%', "+getMovieDTO.getTitle()+", '%')";
+            sql += " title regexp('.*"+getMovieDTO.getTitle()+".*')";
         }
         if(getMovieDTO.getProductId()!=null) {
             sql += flag?" and":" where";
             flag = true;
-            sql += " productid like CONCAT('%', "+getMovieDTO.getProductId()+", '%')";
+            sql += " productid regexp('.*"+getMovieDTO.getProductId()+".*')";
         }
         if(getMovieTypeDTO.getRateType()==1) {
             sql += flag?" and":" where";
@@ -149,39 +152,45 @@ public class HiveMovieMapper {
         if(getMovieDTO.getLanguage()!=null) {
             sql += flag?" and":" where";
             flag = true;
-            sql += " languageof.language like CONCAT('%', \""+getMovieDTO.getLanguage()+"\", '%')";
+            sql += " languageof.language regexp('.*"+getMovieDTO.getLanguage()+".*')";
         }
         if(getMovieDTO.getGenre()!=null) {
             sql += flag?" and":" where";
             flag = true;
-            sql += " classify.genre like CONCAT('%', "+getMovieDTO.getGenre()+", '%')";
+            sql += " classify.genre regexp('.*"+getMovieDTO.getGenre()+".*')";
         }
         if(getMovieDTO.getFormat()!=null) {
             sql += flag?" and":" where";
             flag = true;
-            sql += " binding like CONCAT('%', "+getMovieDTO.getFormat()+", '%')";
+            sql += " binding regexp('.*"+getMovieDTO.getFormat()+".*')";
         }
         if(getMovieDTO.getDirector()!=null) {
             sql += flag?" and":" where";
             flag = true;
-            sql += " direct.director like CONCAT('%', "+getMovieDTO.getDirector()+", '%')";
+            sql += " direct.director regexp('.*"+getMovieDTO.getDirector()+".*')";
         }
         if(getMovieDTO.getActor()!=null) {
             sql += flag?" and":" where";
             flag = true;
-            sql += " act.actor like CONCAT('%', "+getMovieDTO.getActor()+", '%')";
+            sql += " act.actor regexp('.*"+getMovieDTO.getActor()+".*')";
         }
-        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        jdbcTemplate.execute(sql);
+//        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         MoviesCountResult mcr = new MoviesCountResult();
-        Map<String, Object> mp = list.get(0);
-        int cur = 0;
-        for(Object value: mp.values()) {
-            if(cur==0)
-                mcr.setProductCount(Integer.parseInt(value.toString()));
-            else
-                mcr.setMovieCount(Integer.parseInt(value.toString()));
-            cur++;
-        }
+//        Map<String, Object> mp = list.get(0);
+//        int cur = 0;
+//        for(Object value: mp.values()) {
+//            if(cur==0)
+//                mcr.setProductCount(Integer.parseInt(value.toString()));
+//            else
+//                mcr.setMovieCount(Integer.parseInt(value.toString()));
+//            cur++;
+//        }
+//        mcr.setProductCount(list.size());
+//        HashSet<String> hs = new HashSet<String>();
+//        for(Map<String, Object> mp: list)
+//            hs.add((String)mp.get("title"));
+//        mcr.setMovieCount(hs.size());
         return mcr;
     }
 

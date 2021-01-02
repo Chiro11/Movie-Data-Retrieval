@@ -5,8 +5,7 @@ import com.demo.pojo.JsonResult;
 import com.demo.pojo.MoviesCountResult;
 import com.demo.service.MysqlMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,14 +31,27 @@ public class MysqlMovieController {
 //        return mysqlMovieService.getMovies(getMovieDTO);
 //    }
 
-    @RequestMapping("/getMoviesCount")
-    public JsonResult getMoviesCount(GetMovieDTO getMovieDTO, GetMovieTypeDTO getMovieTypeDTO) {
-//        GetMovieDTO getMovieDTO = new GetMovieDTO();
-//        getMovieDTO.setReleaseYear(2000);
-//        getMovieDTO.setReleaseMonth(12);
-//        getMovieDTO.setTitle("An American Christmas Carol");
-//        return getMovieDTO.getReleaseYear();
-//        getMovieDTO.setDirector("Harry");
+    @PostMapping("/getMoviesCount")
+    public JsonResult getMoviesCount(@RequestBody GetMovieAllDTO getMovieAllDTO) {
+        GetMovieDTO getMovieDTO = new GetMovieDTO(getMovieAllDTO.getTitle(),
+                getMovieAllDTO.getProductId(),
+                getMovieAllDTO.getRate(),
+                getMovieAllDTO.getRuntime(),
+                getMovieAllDTO.getReleaseYear(),
+                getMovieAllDTO.getReleaseMonth(),
+                getMovieAllDTO.getReleaseDay(),
+                getMovieAllDTO.getReleaseWeekday(),
+                getMovieAllDTO.getLanguage(),
+                getMovieAllDTO.getFormat(),
+                getMovieAllDTO.getGenre(),
+                getMovieAllDTO.getDirector(),
+                getMovieAllDTO.getActor());
+        GetMovieTypeDTO getMovieTypeDTO = new GetMovieTypeDTO(getMovieAllDTO.getRateType(),
+                getMovieAllDTO.getRuntimeType(),
+                getMovieAllDTO.getReleaseYearType(),
+                getMovieAllDTO.getReleaseMonthType(),
+                getMovieAllDTO.getReleaseDayType(),
+                getMovieAllDTO.getReleaseWeekdayType());
         long startTime = System.currentTimeMillis();
         MoviesCountResult mr = mysqlMovieService.getMoviesCount(getMovieDTO, getMovieTypeDTO);
         long endTime = System.currentTimeMillis();
