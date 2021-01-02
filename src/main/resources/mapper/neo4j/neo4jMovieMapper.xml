@@ -510,7 +510,7 @@
             (P:Product)
             WITH toInt(P.year) as x,count(P) as y
         </if>
-        Return x as x ,y as y Order by y
+        Return x as x ,y as y Order by x
     </select>
 
     <select id="getMovieActor" resultType="String">

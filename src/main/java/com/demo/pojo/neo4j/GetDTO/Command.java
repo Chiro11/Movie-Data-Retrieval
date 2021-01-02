@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class Command{
 
     /*
-    * year,month,day,week,title,
+    * year,month,day,week,title,rate
     * actor,director,genre,runtime,binding,language
     * */
     private String field;

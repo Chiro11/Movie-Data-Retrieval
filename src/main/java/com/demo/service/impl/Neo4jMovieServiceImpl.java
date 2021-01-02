@@ -52,6 +52,9 @@ public class Neo4jMovieServiceImpl implements Neo4jMovieService {
         HashSet<String> director=new HashSet<>();
         while(i<list.size()){
             int s=i;
+            genre.clear();
+            actor.clear();
+            director.clear();
             while(i<list.size()&&list.get(i).getTitle().equals(list.get(s).getTitle())){
                 genre.add(list.get(i).getGenre());
                 actor.add(list.get(i).getActor());
@@ -122,8 +125,8 @@ public class Neo4jMovieServiceImpl implements Neo4jMovieService {
 
 
     @Override
-    public List<Statistic> getStatistic(GetStatisticDTO getStasticDTO){
-        return movieMapper.getStatistic(getStasticDTO);
+    public List<Statistic> getStatistic(GetStatisticDTO getStatisticDTO){
+        return movieMapper.getStatistic(getStatisticDTO);
     }
 
     @Override

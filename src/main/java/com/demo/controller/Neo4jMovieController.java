@@ -9,6 +9,7 @@ import com.demo.pojo.neo4j.GetDTO.GetSeriesMovieDTO;
 import com.demo.pojo.neo4j.GetDTO.GetStatisticDTO;
 import com.demo.pojo.neo4j.ReturnDTO.MovieTitle;
 import com.demo.pojo.neo4j.ReturnDTO.Product;
+import com.demo.pojo.neo4j.ReturnDTO.Statistic;
 import com.demo.service.Neo4jMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -96,12 +97,12 @@ public class Neo4jMovieController {
     }
 
     @PostMapping("/getStatistic")
-    public JsonResult getStatistic(@RequestBody GetStatisticDTO getStasticDTO){
+    public JsonResult getStatistic(@RequestBody GetStatisticDTO getStatisticDTO){
 //        GetStatisticDTO getStasticDTO=new GetStatisticDTO();
 //        getStasticDTO.setField("genre");
-
+        //System.out.println(getStatisticDTO.getField());
         long startTime = System.currentTimeMillis();
-        var list=neo4jMovieService.getStatistic(getStasticDTO);
+        List<Statistic> list=neo4jMovieService.getStatistic(getStatisticDTO);
         long endTime = System.currentTimeMillis();
         return new JsonResult("ok",endTime-startTime,list);
     }
@@ -118,7 +119,7 @@ public class Neo4jMovieController {
         return new JsonResult("ok",endTime-startTime,list);
     }
 
-    @RequestMapping("/getProductMovie")
+    @PostMapping("/getProductMovie")
     public JsonResult getProductMovie(@RequestBody GetSeriesMovieDTO getSeriesMovieDTO){
 //        GetSeriesMovieDTO getSeriesMovieDTO=new GetSeriesMovieDTO();
 //        getSeriesMovieDTO.setTitle("Harry Potter And The Deathly Hallows Part 2");
