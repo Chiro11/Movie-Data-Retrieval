@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.mapper.neo4j.Neo4jMovieMapper">
+    <select id="getTenProduct" resultType="com.demo.pojo.neo4j.ReturnDTO.Product">
+        Match(n:Movie) Return n.title as title Limit 10
+    </select>
+
+    <select id="getByTime" resultType="com.demo.pojo.neo4j.ReturnDTO.SimpleProduct">
+        Match(p:Product)
+        <where>
+            <foreach collection="commands" item="command" index="index">
+                <if test="command.field == 'year'">
+                    p.year=#{command.value}
+                    with p
+                </if>
+            </foreach>
+        </where>
+
+        <where>
+            <foreach collection="commands" item="command" index="index">
+                <if test="command.field == 'month'">
+                    p.month=#{command.value}
+                    with p
+                </if>
+            </foreach>
+        </where>
+
+        <where>
+            <foreach collection="commands" item="command" index="index">
+                <if test="command.field == 'day'">
+                    p.day=#{command.value}
+                    with p
+                </if>
+            </foreach>
+        </where>
+
+        <where>
+            <foreach collection="commands" item="command" index="index">
+                <if test="command.field == 'week'">
+                    p.week=#{command.value}
+                </if>
+            </foreach>
+        </where>
+        RETURN
+        p.title as title,
+        p.productId as productId
+        Limit 100
+    </select>
+
+    <select id="getMovieByCondition" resultType="com.demo.pojo.neo4j.ReturnDTO.SimpleMovie">
+        MATCH
+        (n:Movie)
+        <foreach collection="commands" item="command" index="index">
+            <if test="command.field == 'title' ">
+                <if test="command.condition == 'equal'">
+                    WHERE n.title = #{command.value}
+                    WITH n
+                </if>
+                <if test="command.condition == 'contain'">
+                    WHERE n.title CONTAINS #{command.value}
+                    WITH n
+                </if>
+            </if>
+        </foreach>
+
+
+        <foreach collection="commands" item="command" index="index">
+            <if test="command.field == 'director' ">
+                <if test="command.condition == 'equal'">
+                    MATCH(n:Movie)-[:Direct]-(D:Director{director:#{command.value}})
+                    WITH n
+                </if>
+                <if test="command.condition == 'contain'">
+                    MATCH(n:Movie)-[:Direct]-(D:Director)
+                    WHERE D.director CONTAINS #{command.value}
+                    WITH n
+                </if>
+            </if>
+        </foreach>
+
+
+        <foreach collection="commands" item="command" index="index">
+            <if test="command.field == 'genre' ">
+                <if test="command.condition == 'equal'">
+                    MATCH (n:Movie)-[:GenreOf]-(G:Genre{genre:#{command.value}})
+                    WITH n
+                </if>
+            </if>
+        </foreach>
+
+        <foreach collection="commands" item="command" index="index">
+            <if test="command.field == 'actor' ">
+                <if test="command.condition == 'equal'">
+                    MATCH (n:Movie)-[:Act]-(A:Actor{actor:#{command.value}})
+                    WITH n
+                </if>
+                <if test="command.condition == 'contain'">
+                    MATCH(n:Movie)-[:Act]-(A:Actor)
+                    WHERE A.actor CONTAINS #{command.value}
+                    WITH n
+                </if>
+            </if>
+        </foreach>
+
+
+        <foreach collection="commands" item="command" index="index">
+            <if test="command.field == 'year' ">
+                <if test="command.condition == 'equal'">
+                    MATCH (P:Product{year:#{command.value}})
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'greater'">
+                    MATCH (P:Product)
+                    WHERE toInt(P.year) &gt;= toInt(#{command.value})
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'less'">
+                    MATCH(P:Product)
+                    WHERE toInt(P.year) &lt;= toInt(#{command.value})
+                    WITH n,P
+                </if>
+            </if>
+
+
+            <if test="command.field == 'month' ">
+                <if test="command.condition == 'equal'">
+                    MATCH (P:Product{month:#{command.value}})
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'greater'">
+                    MATCH (P:Product)
+                    WHERE toInt(P.month) &gt;= toInt(#{command.value})
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'less'">
+                    MATCH(P:Product)
+                    WHERE toInt(P.month) &lt;= toInt(#{command.value})
+                    WITH n,P
+                </if>
+            </if>
+
+            <if test="command.field == 'day' ">
+                <if test="command.condition == 'equal'">
+                    MATCH (P:Product{day:#{command.value}})
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'greater'">
+                    MATCH (P:Product)
+                    WHERE toInt(P.day) &gt;= toInt(#{command.value})
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'less'">
+                    MATCH(P:Product)
+                    WHERE toInt(P.day) &lt;= toInt(#{command.value})
+                    WITH n,P
+                </if>
+            </if>
+
+            <if test="command.field == 'week' ">
+                <if test="command.condition == 'equal'">
+                    MATCH (P:Product{week:#{command.value}})
+                    WITH n,P
+                </if>
+            </if>
+
+            <if test="command.field == 'rate' ">
+                <if test="command.condition == 'equal'">
+                    MATCH (P:Product{rate:#{command.value}})
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'greater'">
+                    MATCH (P:Product)
+                    WHERE toFloat(P.rate) &gt;= toFloat(#{command.value})
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'less'">
+                    MATCH(P:Product)
+                    WHERE toFloat(P.rate) &lt;= toFloat(#{command.value})
+                    WITH n,P
+                </if>
+            </if>
+
+
+            <if test="command.field == 'runtime' ">
+                <if test="command.condition == 'equal'">
+                    MATCH (P:Product{runtime:#{command.value}})
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'greater'">
+                    MATCH (P:Product)
+                    WHERE toInt(P.runtime) &gt;= toInt(#{command.value})
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'less'">
+                    MATCH (P:Product)
+                    WHERE toInt(P.runtime) &lt;=  toInt(#{command.value})
+                    WITH n,P
+                </if>
+            </if>
+
+        </foreach>
+
+        <foreach collection="commands" item="command" index="index">
+            <if test="command.field == 'binding' ">
+                <if test="command.condition == 'equal'">
+                    MATCH (P:Product)-[:Bindingof]-(B:Binding{binding:#{command.value} })
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'contain'">
+                    MATCH (P:Product)-[:Bindingof]-(B:Binding)
+                    WHERE B.binding CONTAINS #{command.value}
+                    WITH n,P
+                </if>
+            </if>
+        </foreach>
+
+        <foreach collection="commands" item="command" index="index">
+            <if test="command.field == 'language' ">
+                <if test="command.condition == 'equal'">
+                    MATCH (P:Product)-[:LanguageOf]-(L:Language{language:#{command.value}})
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'contain'">
+                    MATCH (P:Product)-[:LanguageOf]-(L:Language)
+                    WHERE L.language CONTAINS #{command.value}
+                    WITH n,P
+                </if>
+            </if>
+        </foreach>
+        MATCH (n)-[:ProductOf]-(P)
+        WITH n
+        Limit 100
+        MATCH
+        (n)-[:Direct]-(D)
+        ,(n)-[:GenreOf]-(G)
+        ,(n)-[:Act]-(A)
+        RETURN
+        D.director as director,
+        G.genre as genre,
+        n.title as title,
+        A.actor as actor
+
+    </select>
+
+    <select id="getMovieNumByCondition" resultType="com.demo.pojo.neo4j.ReturnDTO.MatchNum">
+        MATCH
+        (n:Movie)
+        <foreach collection="commands" item="command" index="index">
+            <if test="command.field == 'title' ">
+                <if test="command.condition == 'equal'">
+                    WHERE n.title = #{command.value}
+                    WITH n
+                </if>
+                <if test="command.condition == 'contain'">
+                    WHERE n.title CONTAINS #{command.value}
+                    WITH n
+                </if>
+            </if>
+        </foreach>
+
+
+        <foreach collection="commands" item="command" index="index">
+            <if test="command.field == 'director' ">
+                <if test="command.condition == 'equal'">
+                    MATCH(n:Movie)-[:Direct]-(D:Director{director:#{command.value}})
+                    WITH n
+                </if>
+                <if test="command.condition == 'contain'">
+                    MATCH(n:Movie)-[:Direct]-(D:Director)
+                    WHERE D.director CONTAINS #{command.value}
+                    WITH n
+                </if>
+            </if>
+        </foreach>
+
+
+        <foreach collection="commands" item="command" index="index">
+            <if test="command.field == 'genre' ">
+                <if test="command.condition == 'equal'">
+                    MATCH (n:Movie)-[:GenreOf]-(G:Genre{genre:#{command.value}})
+                    WITH n
+                </if>
+            </if>
+        </foreach>
+
+        <foreach collection="commands" item="command" index="index">
+            <if test="command.field == 'actor' ">
+                <if test="command.condition == 'equal'">
+                    MATCH (n:Movie)-[:Act]-(A:Actor{actor:#{command.value}})
+                    WITH n
+                </if>
+                <if test="command.condition == 'contain'">
+                    MATCH(n:Movie)-[:Act]-(A:Actor)
+                    WHERE A.actor CONTAINS #{command.value}
+                    WITH n
+                </if>
+            </if>
+        </foreach>
+
+
+        <foreach collection="commands" item="command" index="index">
+            <if test="command.field == 'year' ">
+                <if test="command.condition == 'equal'">
+                    MATCH (P:Product{year:#{command.value}})
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'greater'">
+                    MATCH (P:Product)
+                    WHERE toInt(P.year) &gt;= toInt(#{command.value})
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'less'">
+                    MATCH(P:Product)
+                    WHERE toInt(P.year) &lt;= toInt(#{command.value})
+                    WITH n,P
+                </if>
+            </if>
+
+
+            <if test="command.field == 'month' ">
+                <if test="command.condition == 'equal'">
+                    MATCH (P:Product{month:#{command.value}})
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'greater'">
+                    MATCH (P:Product)
+                    WHERE toInt(P.month) &gt;= toInt(#{command.value})
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'less'">
+                    MATCH(P:Product)
+                    WHERE toInt(P.month) &lt;= toInt(#{command.value})
+                    WITH n,P
+                </if>
+            </if>
+
+            <if test="command.field == 'day' ">
+                <if test="command.condition == 'equal'">
+                    MATCH (P:Product{day:#{command.value}})
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'greater'">
+                    MATCH (P:Product)
+                    WHERE toInt(P.day) &gt;= toInt(#{command.value})
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'less'">
+                    MATCH(P:Product)
+                    WHERE toInt(P.day) &lt;= toInt(#{command.value})
+                    WITH n,P
+                </if>
+            </if>
+
+            <if test="command.field == 'week' ">
+                <if test="command.condition == 'equal'">
+                    MATCH (P:Product{week:#{command.value}})
+                    WITH n,P
+                </if>
+            </if>
+
+            <if test="command.field == 'rate' ">
+                <if test="command.condition == 'equal'">
+                    MATCH (P:Product{rate:#{command.value}})
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'greater'">
+                    MATCH (P:Product)
+                    WHERE toFloat(P.rate) &gt;= toFloat(#{command.value})
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'less'">
+                    MATCH(P:Product)
+                    WHERE toFloat(P.rate) &lt;= toFloat(#{command.value})
+                    WITH n,P
+                </if>
+            </if>
+
+
+            <if test="command.field == 'runtime' ">
+                <if test="command.condition == 'equal'">
+                    MATCH (P:Product{runtime:#{command.value}})
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'greater'">
+                    MATCH (P:Product)
+                    WHERE toInt(P.runtime) &gt;= toInt(#{command.value})
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'less'">
+                    MATCH (P:Product)
+                    WHERE toInt(P.runtime) &lt;=  toInt(#{command.value})
+                    WITH n,P
+                </if>
+            </if>
+
+        </foreach>
+
+        <foreach collection="commands" item="command" index="index">
+            <if test="command.field == 'binding' ">
+                <if test="command.condition == 'equal'">
+                    MATCH (P:Product)-[:Bindingof]-(B:Binding{binding:#{command.value} })
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'contain'">
+                    MATCH (P:Product)-[:Bindingof]-(B:Binding)
+                    WHERE B.binding CONTAINS #{command.value}
+                    WITH n,P
+                </if>
+            </if>
+        </foreach>
+
+        <foreach collection="commands" item="command" index="index">
+            <if test="command.field == 'language' ">
+                <if test="command.condition == 'equal'">
+                    MATCH (P:Product)-[:LanguageOf]-(L:Language{language:#{command.value}})
+                    WITH n,P
+                </if>
+                <if test="command.condition == 'contain'">
+                    MATCH (P:Product)-[:LanguageOf]-(L:Language)
+                    WHERE L.language CONTAINS #{command.value}
+                    WITH n,P
+                </if>
+            </if>
+        </foreach>
+        MATCH (n)-[:ProductOf]-(P)
+        RETURN
+        count(distinct n) as movieNum,
+        count(distinct P) as productNum
+
+
+    </select>
+
+    <select id="getCooperation" resultType="com.demo.pojo.neo4j.ReturnDTO.ReturnCooperationDTO">
+        MATCH
+        <if test="getCooperationDTO.role1 == 'actor'">
+            (A:Actor {actor : #{getCooperationDTO.name}})
+        </if>
+        <if test="getCooperationDTO.role1 == 'director'">
+            (A:Director {director : #{getCooperationDTO.name}})
+        </if>
+        -[r:WorkWith]-
+        <if test="getCooperationDTO.role2 == 'actor'">
+            (B:Actor)
+            RETURN
+            distinct
+            B.actor as name,
+            toInt(r.times) as count
+            ORDER by count DESC
+            LIMIT 200
+        </if>
+        <if test="getCooperationDTO.role2 == 'director'">
+            (B:Director)
+            RETURN
+            distinct
+            B.director as name,
+            toInt(r.times) as count
+            ORDER by count DESC
+            LIMIT 200
+        </if>
+    </select>
+
+    <select id="getTopCooperation" resultType="com.demo.pojo.neo4j.ReturnDTO.ReturnCooperationDTO">
+        MATCH
+        <if test="getCooperationDTO.role1 == 'actor' and getCooperationDTO.role2 == 'actor'">
+            (A:Actor)-[r:WorkWith]-(B:Actor)
+            WITH
+            A.actor + "---" + B.actor as n,r
+        </if>
+        <if test="getCooperationDTO.role1 == 'actor' and getCooperationDTO.role2 == 'director'">
+            (A:Actor)-[r:WorkWith]-(B:Director)
+            WITH
+            A.actor + "---" + B.director as n,r
+        </if>
+        <if test="getCooperationDTO.role1 == 'director' and getCooperationDTO.role2 == 'director'">
+            (A:Director)-[r:WorkWith]-(B:Director)
+            WITH
+            A.director + "---" + B.director as n,r
+        </if>
+        <if test="getCooperationDTO.role1 == 'director' and getCooperationDTO.role2 == 'actor'">
+            (A:Actor)-[r:WorkWith]-(B:Director)
+            WITH
+            A.actor + "---" + B.director as n,r
+        </if>
+        RETURN
+        n as name,
+        toInt(r.times) as count
+        ORDER BY count DESC
+        LIMIT 50
+    </select>
+
+    <select id="getStatistic" resultType="com.demo.pojo.neo4j.ReturnDTO.Statistic">
+        MATCH
+        <if test="getStatisticDTO.field == 'binding'">
+            (B:Binding)-[:BindingOf]-(P:Product)
+            WITH B.binding as x ,count(P) as y
+        </if>
+        <if test="getStatisticDTO.field == 'language'">
+            (L:Language)-[:LanguageOf]-(P:Product)
+            WITH L.language as x ,count(P) as y
+        </if>
+        <if test="getStatisticDTO.field == 'genre'">
+            (G:Genre)-[:GenreOf]-(M:Movie)
+            WITH G.genre as x ,count(M) as y
+        </if>
+        <if test="getStatisticDTO.field == 'rate'">
+            (P:Product)
+            WITH P.rate as x,count(P) as y
+        </if>
+        <if test="getStatisticDTO.field == 'year'">
+            (P:Product)
+            WITH toInt(P.year) as x,count(P) as y
+        </if>
+        Return x as x ,y as y Order by y
+    </select>
+
+    <select id="getMovieActor" resultType="String">
+        MATCH (:Movie{title:#{value}})-[:Act]-(B:Actor)
+        return B.actor
+    </select>
+
+    <select id="getMovieDirector" resultType="String">
+
+        MATCH (:Movie{title:#{value}})-[:Direct]-(B:Director)
+        return B.director
+    </select>
+
+    <select id="getMovieGenre" resultType="String">
+        MATCH (:Movie{title:#{value}})-[:GenreOf]-(B:Genre)
+        return B.genre
+    </select>
+
+    <select id="getSeriesMovie" resultType="com.demo.pojo.neo4j.ReturnDTO.MovieTitle">
+        MATCH (:Movie{title:#{getSeriesMovieDTO.title}})-[:SeriesOf]-()-[:SeriesOf]-(B:Movie)
+        return B.title as title
+    </select>
+
+    <select id="getProductMovie" resultType="com.demo.pojo.neo4j.ReturnDTO.SimpleProduct">
+        MATCH (:Movie{title:#{getSeriesMovieDTO.title}})-[:ProductOf]-(P:Product)
+        return
+        P.productId as productId,
+        P.title as title
+    </select>
+
+</mapper>

@@ -16,12 +16,14 @@ public class HiveMovieServiceImpl implements HiveMovieService {
     @Autowired
     HiveMovieMapper hiveMovieMapper;
 
+    @Override
     public MoviesCountResult test(GetMovieDTO getMovieDTO,
                                   GetMovieTypeDTO getMovieTypeDTO,
                                   JdbcTemplate jdbcTemplate) {
         return hiveMovieMapper.test(getMovieDTO, getMovieTypeDTO, jdbcTemplate);
     }
 
+    @Override
     public MoviesCountResult getMoviesCount(GetMovieDTO getMovieDTO,
                                             GetMovieTypeDTO getMovieTypeDTO,
                                             JdbcTemplate jdbcTemplate) {
