@@ -3,6 +3,7 @@ package com.demo.service.impl;
 import com.demo.dto.GetMovieDTO;
 import com.demo.dto.GetMovieTypeDTO;
 import com.demo.dto.PageDataDTO;
+import com.demo.dto.ReturnMovieDTO;
 import com.demo.pojo.MoviesCountResult;
 import com.demo.mapper.MysqlMovieMapper;
 import com.demo.service.MysqlMovieService;
@@ -29,9 +30,9 @@ public class MysqlMovieServiceImpl implements MysqlMovieService {
         return mysqlMovieMapper.getMoviesCount(getMovieDTO, getMovieTypeDTO);
     }
 
-    public List<String> getMovieList(GetMovieDTO getMovieDTO,
-                                     GetMovieTypeDTO getMovieTypeDTO,
-                                     PageDataDTO pageDataDTO) {
+    public List<ReturnMovieDTO> getMovieList(GetMovieDTO getMovieDTO,
+                                             GetMovieTypeDTO getMovieTypeDTO,
+                                             PageDataDTO pageDataDTO) {
         int startPos = (pageDataDTO.getPageNum()-1)*pageDataDTO.getPageSize();
         return mysqlMovieMapper.getMovieList(getMovieDTO, getMovieTypeDTO, startPos, pageDataDTO.getPageSize());
     }

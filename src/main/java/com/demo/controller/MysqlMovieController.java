@@ -85,7 +85,7 @@ public class MysqlMovieController {
 //        pageDataDTO.setPageSize(10);
 //        getMovieDTO.setTitle("Harry");
         long startTime = System.currentTimeMillis();
-        List<String> titles = mysqlMovieService.getMovieList(getMovieDTO, getMovieTypeDTO, pageDataDTO);
+        List<ReturnMovieDTO> titles = mysqlMovieService.getMovieList(getMovieDTO, getMovieTypeDTO, pageDataDTO);
         long endTime = System.currentTimeMillis();
         return new JsonResult("ok", endTime-startTime, titles);
     }

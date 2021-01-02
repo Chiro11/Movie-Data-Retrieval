@@ -99,8 +99,13 @@
         </where>
     </select>
 
-    <select id="getMovieList" resultType="String">
-        select distinct title
+    <select id="getMovieList" resultType="com.demo.dto.ReturnMovieDTO">
+        select distinct title,
+               rate,
+               runtime,
+               release_year as "releaseYear",
+               release_month as "releaseMonth",
+               release_day as "releaseDay"
         from Product
         <if test="!(getMovieDTO.language == null)">
             natural join LanguageOf
