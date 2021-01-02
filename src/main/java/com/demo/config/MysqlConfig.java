@@ -15,8 +15,8 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 @MapperScan(basePackages = MysqlConfig.PACKAGE, sqlSessionFactoryRef = "secondSqlSessionFactory")
 public class MysqlConfig {
 
-    static final String PACKAGE = "com.demo.mapper";
-    static final String MAPPER_LOCATION = "classpath:mapper/*.xml";
+    static final String PACKAGE = "com.demo.mapper.mysql";
+    static final String MAPPER_LOCATION = "classpath:mapper/mysql/*.xml";
 
     @Value("${mysql.datasource.url}")
     private String url;

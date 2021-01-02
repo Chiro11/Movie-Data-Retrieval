@@ -43,3 +43,10 @@ mysql:
     max-active: 20
     test-on-borrow: true
     max-wait: 60000
+
+
+neo4j:
+  url: jdbc:neo4j:bolt://106.15.234.251:7687
+  username: neo4j
+  password: 123456
+  driver-class-name: org.neo4j.jdbc.bolt.BoltDriver

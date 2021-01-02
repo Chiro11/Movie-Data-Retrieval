@@ -4,7 +4,7 @@ import com.demo.dto.GetMovieDTO;
 import com.demo.dto.GetMovieTypeDTO;
 import com.demo.dto.PageDataDTO;
 import com.demo.pojo.MoviesCountResult;
-import com.demo.mapper.MysqlMovieMapper;
+import com.demo.mapper.mysql.MysqlMovieMapper;
 import com.demo.service.MysqlMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,10 +25,12 @@ public class MysqlMovieServiceImpl implements MysqlMovieService {
 //    public ProductMoviePair getMovieCount(GetMovieDTO getMovieDTO) {
 //        return mysqlMovieMapper.getMoviesCount(getMovieDTO);
 //    }
+    @Override
     public MoviesCountResult getMoviesCount(GetMovieDTO getMovieDTO, GetMovieTypeDTO getMovieTypeDTO) {
         return mysqlMovieMapper.getMoviesCount(getMovieDTO, getMovieTypeDTO);
     }
 
+    @Override
     public List<String> getMovieList(GetMovieDTO getMovieDTO,
                                      GetMovieTypeDTO getMovieTypeDTO,
                                      PageDataDTO pageDataDTO) {

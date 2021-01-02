@@ -1,4 +1,4 @@
-package com.demo.mapper;
+package com.demo.mapper.mysql;
 
 import com.demo.dto.GetMovieDTO;
 import com.demo.dto.GetMovieTypeDTO;

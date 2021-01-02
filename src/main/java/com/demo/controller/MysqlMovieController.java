@@ -6,6 +6,7 @@ import com.demo.pojo.MoviesCountResult;
 import com.demo.service.MysqlMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class MysqlMovieController {
 //    }
 
     @RequestMapping("/getMoviesCount")
-    public JsonResult getMoviesCount(GetMovieDTO getMovieDTO, GetMovieTypeDTO getMovieTypeDTO) {
+    public JsonResult getMoviesCount(@RequestParam GetMovieDTO getMovieDTO, @RequestParam GetMovieTypeDTO getMovieTypeDTO) {
 //        GetMovieDTO getMovieDTO = new GetMovieDTO();
 //        getMovieDTO.setReleaseYear(2000);
 //        getMovieDTO.setReleaseMonth(12);
