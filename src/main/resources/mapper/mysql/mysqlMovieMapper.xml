@@ -100,7 +100,8 @@
     </select>
 
     <select id="getMovieList" resultType="com.demo.dto.ReturnMovieDTO">
-        select distinct title,
+        select title,
+               productId,
                rate,
                runtime,
                release_year as "releaseYear",
@@ -200,5 +201,14 @@
             </if>
         </where>
         limit #{startPos}, #{listSize}
+    </select>
+
+    <select id="getReviewList" resultType="com.demo.dto.ReturnReviewDTO">
+        select productId as "productId",
+               profileName as "profileName",
+               helpfulness as "helpfulness",
+               summary as "summary"
+        from Review
+        where productId = #{productId}
     </select>
 </mapper>

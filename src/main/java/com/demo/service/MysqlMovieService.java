@@ -1,10 +1,8 @@
 package com.demo.service;
 
-import com.demo.dto.GetMovieDTO;
-import com.demo.dto.GetMovieTypeDTO;
-import com.demo.dto.PageDataDTO;
-import com.demo.dto.ReturnMovieDTO;
+import com.demo.dto.*;
 import com.demo.pojo.MoviesCountResult;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,5 +15,7 @@ public interface MysqlMovieService {
     public List<ReturnMovieDTO> getMovieList(GetMovieDTO getMovieDTO,
                                              GetMovieTypeDTO getMovieTypeDTO,
                                              PageDataDTO pageDataDTO);
+
+    public List<ReturnReviewDTO> getReviewList(String productId);
 
 }

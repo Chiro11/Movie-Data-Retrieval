@@ -1,12 +1,10 @@
 package com.demo.service.impl;
 
-import com.demo.dto.GetMovieDTO;
-import com.demo.dto.GetMovieTypeDTO;
-import com.demo.dto.PageDataDTO;
-import com.demo.dto.ReturnMovieDTO;
+import com.demo.dto.*;
 import com.demo.pojo.MoviesCountResult;
 import com.demo.mapper.mysql.MysqlMovieMapper;
 import com.demo.service.MysqlMovieService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,5 +35,10 @@ public class MysqlMovieServiceImpl implements MysqlMovieService {
                                      PageDataDTO pageDataDTO) {
         int startPos = (pageDataDTO.getPageNum()-1)*pageDataDTO.getPageSize();
         return mysqlMovieMapper.getMovieList(getMovieDTO, getMovieTypeDTO, startPos, pageDataDTO.getPageSize());
+    }
+
+    @Override
+    public List<ReturnReviewDTO> getReviewList(String productId) {
+        return mysqlMovieMapper.getReviewList(productId);
     }
 }

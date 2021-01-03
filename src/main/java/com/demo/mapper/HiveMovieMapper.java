@@ -39,15 +39,15 @@ public class HiveMovieMapper {
     public MoviesCountResult getMoviesCount(GetMovieDTO getMovieDTO,
                                        GetMovieTypeDTO getMovieTypeDTO,
                                        JdbcTemplate jdbcTemplate) {
-        String sql = "select * from test";
+        String sql = "select * from partition_product";
         if(getMovieDTO.getLanguage()!=null)
-            sql += " inner join languageof on (test.productid=languageof.productid)";
+            sql += " inner join languageof on (partition_product.productid=languageof.productid)";
         if(getMovieDTO.getGenre()!=null)
-            sql += " inner join classify on (classify.movie=test.title)";
+            sql += " inner join classify on (classify.movie=partition_product.title)";
         if(getMovieDTO.getDirector()!=null)
-            sql += " inner join direct on (direct.movie=test.title)";
+            sql += " inner join direct on (direct.movie=partition_product.title)";
         if(getMovieDTO.getActor()!=null)
-            sql += " inner join act on (act.movie=test.title)";
+            sql += " inner join act on (act.movie=partition_product.title)";
         boolean flag = false;
         if(getMovieDTO.getTitle()!=null) {
             sql += flag?" and":" where";

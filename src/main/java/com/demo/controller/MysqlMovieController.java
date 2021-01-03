@@ -94,4 +94,13 @@ public class MysqlMovieController {
         long endTime = System.currentTimeMillis();
         return new JsonResult("ok", endTime-startTime, titles);
     }
+
+    @RequestMapping("/getReviewList")
+    public JsonResult getReviewList(@RequestBody String productId) {
+//        productId = "B00004CQT3";
+        long startTime = System.currentTimeMillis();
+        List<ReturnReviewDTO> reviews = mysqlMovieService.getReviewList(productId);
+        long endTime = System.currentTimeMillis();
+        return new JsonResult("ok", endTime-startTime, reviews);
+    }
 }
