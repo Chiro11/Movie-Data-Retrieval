@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class ReturnMovieDTO {
 
     private String title;
+    private String productId;
     private double rate;
     private int runtime;
     private int releaseYear;
