@@ -98,6 +98,7 @@ public class MysqlMovieController {
     @RequestMapping("/getReviewList")
     public JsonResult getReviewList(@RequestBody String productId) {
 //        productId = "B00004CQT3";
+        productId=productId.split("=")[0];
         long startTime = System.currentTimeMillis();
         List<ReturnReviewDTO> reviews = mysqlMovieService.getReviewList(productId);
         long endTime = System.currentTimeMillis();
